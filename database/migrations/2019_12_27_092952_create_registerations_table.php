@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStudentsTable extends Migration
+class CreateRegisterationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateStudentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('students', function (Blueprint $table) {
+        Schema::create('registerations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('rollno');
             $table->string('name');
@@ -22,15 +22,21 @@ class CreateStudentsTable extends Migration
             $table->string('father_nrc');
             $table->date('dob');
             $table->string('phone');
+            $table->string('student_email');
             $table->string('address');
             $table->string('profile');
+            $table->string('register_fee');
 
             $table->unsignedBigInteger('year_id');
-            $table->longText('book_id');
             $table->unsignedBigInteger('major_id');
-            $table->unsignedBigInteger('activity_id');
+            $table->unsignedBigInteger('user_id');
 
             $table->timestamps();
+
+            $table->foreign('year_id')->references('id')->on('years')->onDelete('cascade');
+            $table->foreign('major_id')->references('id')->on('majors')->onDelete('cascade');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -41,6 +47,6 @@ class CreateStudentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('registerations');
     }
 }

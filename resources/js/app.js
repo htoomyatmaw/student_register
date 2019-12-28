@@ -28,6 +28,14 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
+Vue.component('template-toolbar-component', require('./components/TemplateToolbarComponent.vue').default);
+Vue.component('student-list-component', require('./components/StudentListComponent.vue').default);
+Vue.component('body-content-component', require('./components/BodyContentComponent.vue').default);
+Vue.component('profile-component', require('./components/ProfileComponent.vue').default);
+Vue.component('enrolled-component', require('./components/EnrolledComponent.vue').default);
+Vue.component('studentlist-component', require('./components/StudentListComponent.vue').default);
+Vue.component('registeration-component', require('./components/RegisterationComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
