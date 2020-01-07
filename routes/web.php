@@ -33,12 +33,32 @@ Route::get('/studentlist/{id}', 'StudentListController@studentList');
 
 Route::post('/storeStudent', 'StudentListController@storeStudent');
 
-Route::get('/registeration/{id}','RegisterationController@registeration');
+Route::get('/registeration/{id}','RegisterationController@registeration')->middleware('auth');
 
-Route::post('/fetchbooklist', 'BookListController@fetchBookList');
+Route::get('/profile/{id}', 'ProfileController@profile')->middleware('auth');
 
-Route::get('/enrolledinfo', 'EnrolledController@enrolledinfo');
+Route::get('/profileedit/{id}', 'ProfileController@profileedit')->middleware('auth');
 
-Route::get('/authid', 'EnrolledController@authId');
+Route::post('/profileUpdate', 'ProfileController@profileUpdate')->middleware('auth');
+
+Route::post('/fetchbooklist', 'BookListController@fetchBookList')->middleware('auth');
+
+Route::get('/selectenrolled/{id}', 'EnrolledController@selectenrolled');
+
+Route::get('/viewenrolled/{id}','EnrolledController@viewenrolled');
+
+Route::get('/secondviewenrolled/{id}','EnrolledController@secondviewenrolled');
+
+Route::get('/thirdviewenrolled/{id}','EnrolledController@thirdviewenrolled');
+
+Route::get('/fourthviewenrolled/{id}','EnrolledController@fourthviewenrolled');
+
+Route::get('/fifthviewenrolled/{id}','EnrolledController@fifthviewenrolled');
+
+Route::get('/authid', 'EnrolledController@authId')->middleware('auth');
+
+Route::get('/authuserid', 'EnrolledController@authuserId')->middleware('auth');
+
+Route::get('/logout', 'Auth\LoginController@logout');
 
 

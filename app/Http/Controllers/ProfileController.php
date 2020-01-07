@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\User;
+use Auth;
 
 class ProfileController extends Controller
 {
@@ -82,6 +83,54 @@ class ProfileController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function profile($id){
+
+        $user = User::where('id', $id)->get();
+
+        return view('profile',compact('user'));
+
+
+    }
+
+    public function profileedit($id){
+
+        $useredit = User::find($id);
+
+        return view('profileedit', compact('useredit'));
+
+    }
+
+    public function profileUpdate(Request $request){
+
+        $password = $request['password'];
+
+        if($password == ''){
+
+            $user = User::find($request['id']);
+
+            $user->name = $request['name'];
+            $user->email = $request['email'];
+            $user->password = Auth::user()->password;
+
+            $user->save();
+
+            return response()->json('success');
+        }
+        else{
+
+            $user = User::find($request['id']);
+
+            $user->name = $request['name'];
+            $user->email = $request['email'];
+            $user->password = Hash::make($request['password']);
+
+            $user->save();
+
+            return response()->json('success');
+        }
+
     }
 
    

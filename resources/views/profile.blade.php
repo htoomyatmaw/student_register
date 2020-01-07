@@ -2,7 +2,7 @@
 
 @section('content')
 
-<profile-component></profile-component>
+<profile-component :userdata = "{{ json_encode($user) }}"></profile-component>
 
 @endsection
 

@@ -32,9 +32,16 @@ Vue.component('template-toolbar-component', require('./components/TemplateToolba
 Vue.component('student-list-component', require('./components/StudentListComponent.vue').default);
 Vue.component('body-content-component', require('./components/BodyContentComponent.vue').default);
 Vue.component('profile-component', require('./components/ProfileComponent.vue').default);
-Vue.component('enrolled-component', require('./components/EnrolledComponent.vue').default);
+Vue.component('select-enrolled-component', require('./components/SelectEnrolledComponent.vue').default);
+Vue.component('view-enrolled-component', require('./components/ViewEnrolledComponent.vue').default);
+Vue.component('secondview-enrolled-component', require('./components/SecondViewEnrolledComponent.vue').default);
+Vue.component('thirdview-enrolled-component', require('./components/ThirdViewEnrolledComponent.vue').default);
+Vue.component('fourthview-enrolled-component', require('./components/FourthViewEnrolledComponent.vue').default);
+Vue.component('fifthview-enrolled-component', require('./components/FifthViewEnrolledComponent.vue').default);
 Vue.component('studentlist-component', require('./components/StudentListComponent.vue').default);
 Vue.component('registeration-component', require('./components/RegisterationComponent.vue').default);
+Vue.component('profile-edit-component', require('./components/ProfileEditComponent.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -61,14 +61,14 @@
       registrationFee(){
         axios.get('/registrationfee').then(res=> {
           this.yearfee = res.data;
-          console.log(res.data);
+          // console.log(res.data);
         })
       },
 
       activityFee(){
         axios.get('/activityfee').then(res=> {
           this.activityfee = res.data;
-          console.log(res.data);
+          // console.log(res.data);
         })
       }
     },

@@ -88,7 +88,7 @@ class RegisterationController extends Controller
 
     public function registeration($id){
 
-       $activities= Activity::all();
+       $activities = Activity::all();
        $majors = Major::all();
        $year = Year::where('id',$id)->first();
 

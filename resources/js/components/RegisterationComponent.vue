@@ -2,7 +2,7 @@
 <v-app class="mt-4">
   <v-card
     class="mx-auto"
-    max-width="800"
+    max-width="900"
   >
     
     <v-toolbar
@@ -84,7 +84,7 @@
                         required
                         ></v-text-field>
                     </v-col>
-                     <v-col
+                     <!-- <v-col
                         cols="12"
                         md="6"
                         >
@@ -94,7 +94,36 @@
                         :rules="[v => !!v || 'Student DOB is required']"
                         required
                         ></v-text-field>
+                    </v-col> -->
+                    <v-col cols="12" sm="6">
+                        <v-menu
+                            ref="menu"
+                            v-model="menu"
+                            :close-on-content-click="false"
+                            :return-value.sync="date"
+                            transition="scale-transition"
+                            offset-y
+                            min-width="290px"
+                        >
+                            <template v-slot:activator="{ on }">
+                            <v-text-field
+                                v-model="student.dob"
+                                label="Choose Your Date of Birth"
+                                prepend-icon="event"
+                                readonly
+                                v-on="on"
+                                :rules="[v => !!v || 'Student DOB is required']"
+                                required
+                            ></v-text-field>
+                            </template>
+                            <v-date-picker v-model="student.dob" no-title scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
+                            <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                            </v-date-picker>
+                        </v-menu>
                     </v-col>
+
                     <v-col
                         cols="12"
                         md="6"
@@ -183,7 +212,7 @@
                     <v-col cols="12" md="4"></v-col>
                     <v-col cols="12" md="4">
                         <v-btn color="bg-info" :disabled="!valid"  @click="validate" class="mr-5 text-white">Submit</v-btn>
-                        <v-btn color="bg-info" @click="reset" class="text-white">Reset</v-btn>
+                        <v-btn color="bg-danger" @click="reset" class="text-white">Reset</v-btn>
                        
                     </v-col>
                     <v-col cols="12" md="4"></v-col>
@@ -202,37 +231,49 @@
   export default {
       props: ['year','majors','activities'],
     data () {
-      return {
-        student: {
-            profile: '',
-            rollno: '',
-            name: '',
-           
-            student_nrc: '',
-            father_name: '',
-            father_nrc: '',
-            dob: '',
-            phone: '',
-            student_email: '',
-          
-            address: '',
-        },
-        bookChecked: [],
-        majorChecked: '',
-        firstYear: true,
-        books:[],
-        valid: true,
+        return {
+            student: {
+                profile: '',
+                rollno: '',
+                name: '',
+            
+                student_nrc: '',
+                father_name: '',
+                father_nrc: '',
+                dob: '',
+                phone: '',
+                student_email: '',
+            
+                address: '',
+            },
+            bookChecked: [],
+            majorChecked: '',
+            firstYear: true,
+            books:[],
+            valid: true,
 
-        //Valications
-        emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-        ],
-      }
+            //Valications
+            emailRules: [
+            v => !!v || 'E-mail is required',
+            v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+            ],
+
+            authid: [],
+
+            date: new Date().toISOString().substr(0, 10),
+            menu: false,
+            modal: false,
+            menu2: false,
+        }
       
-    
+   
 
     },
+
+    mounted(){
+        this.authId();
+    },
+
     methods: {
         selectMajor(majorId) {
             // debugger;   
@@ -244,6 +285,13 @@
                 this.books= res.data;
                 // console.log(res.data);   
             });
+        },
+
+         authId(){
+            axios.get('/authid').then(res => {
+                this.authid = res.data;
+                // console.log(this.authid);
+            })
         },
 
         addStudent() {
@@ -278,17 +326,23 @@
             var data = {
                 student: this.student,
                 registerFee: registerFee,
-                userId: 1,
+                userId: this.authid.id,
                 yearId: this.year.id,
                 selectedBookId: selectbookId,
                 activityId: activityIds,
                 major_id: major,
             };
 
-            axios.post('/storeStudent', data).then ( resp=> {
-                alert('Are You Sure to Registeration?');
+            axios.post('/storeStudent', data).then ( resp => {
                if( resp.data == 'success') {
+
                    window.location.href = '/';
+                   alert('Your registeration successfully!');
+                   
+               }
+               else{
+                   window.location.href = '/registeration/'+ this.year.id;
+                   alert('Your selected year have already exited!');
                }
            })
 

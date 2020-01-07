@@ -4,6 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Book;
+use App\Activity;
+use App\Year;
+use App\Major;
+
 class Registeration extends Model
 {
      
@@ -24,4 +29,23 @@ class Registeration extends Model
         'major_id',
 
     ];
+
+  public function books(){
+      return $this->belongsToMany('App\Book','SelectedBook');
+  }
+
+  public function activities(){
+      return $this->belongsToMany('App\Activity','SelectedActivity');
+  }
+
+  public function year(){
+      return $this->belongsTo('App\Year');
+
+  }
+
+  public function majors(){
+    return $this->hasOne('App\Major');
+    
+}
+
 }

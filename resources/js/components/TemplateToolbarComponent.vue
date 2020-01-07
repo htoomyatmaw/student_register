@@ -1,6 +1,6 @@
 <template>
   <v-toolbar class="bg-info">
-    <v-toolbar-title class="toolbar-title text-white" style="font-size: 2.1em">Online Student Register</v-toolbar-title>
+    <v-toolbar-title class="toolbar-title text-white" style="font-size: 2.1em">Online Student Registeration</v-toolbar-title>
     <v-spacer></v-spacer>
 
     <v-btn color="white" class="mr-4" @click="homeFun()">Home</v-btn>
@@ -56,19 +56,14 @@
 
     <v-menu v-if="login_status == true" offset-y>
         <template v-slot:activator="{ on }">
-            <v-btn
-                class="align-self-center ml-3"
-                v-on="on"
-            >
-                Profile
-                {{ authid }}
-                <v-icon right>mdi-menu-down</v-icon>
+           <v-btn color="black" class="ml-3" v-on="on" fab small dark>
+              <v-icon>mdi-account-circle</v-icon>
             </v-btn>
         </template>
 
         <v-list class="grey lighten-5">
-            <v-list-item @click="profileFun()">Profile</v-list-item>
-            <v-list-item @click="enrolledFun()">Your Enrolled</v-list-item>
+            <v-list-item @click="profileFun(authid.id)">Profile</v-list-item>
+            <v-list-item @click="enrolledFun(authid.id)">Your Enrolled</v-list-item>
             <v-list-item @click="logoutFun()">Logout</v-list-item>
         </v-list>
     </v-menu>
@@ -90,9 +85,15 @@ import { log } from 'util';
       major: ['CST', 'CS', 'CT'],
       yearlist: [],
 
-      authid : [],
+      authid : '',
 
     }),
+
+    mounted()
+    {
+        this.authId();
+    },
+    
 
     methods:{
 
@@ -123,29 +124,36 @@ import { log } from 'util';
         },
 
         registrationFun(id){
-            
-            window.location.href='/registeration/'+id;
+           
+            window.location.href='/registeration/'+ id;
         },
 
-        profileFun(){
-            
+        profileFun(id){
+            window.location.href='/profile/'+id;
         },
 
         enrolledFun(id){
-            window.location.href = '/enrolledinfo'+id;
-
+            window.location.href = '/selectenrolled/'+id;
         },
+
+        // enrolledFun(id){
+        //     window.location.href = '/enrolledinfo/'+id;
+
+        // },
 
         authId(){
             axios.get('/authid').then(res => {
                 this.authid = res.data;
-                console.log(res.data);
+                // console.log(res.data);
             })
         },
 
         logoutFun(){
-            if( ! alert('Are you sure?')) return;
-            window.location.href="/";
+            if( ! confirm('Are you sure to logout?')) return;
+            axios.get('/logout').then(res => {
+                window.location.href='/';
+            })
+            
         },
 
        

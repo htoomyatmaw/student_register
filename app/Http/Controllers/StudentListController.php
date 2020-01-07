@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Registeration;
 use App\SelectedBook;
 use App\SelectedActivity;
+use App\User;
+use Auth;
 
 class StudentListController extends Controller
 {
@@ -109,41 +111,65 @@ class StudentListController extends Controller
         $book_id =$request['selectedBookId'];
         $activity_id =$request['activityId'];
 
-        $register= Registeration::create([
-            "rollno"        =>$rollno,
-            "name"          =>$name,
-            "student_nrc"   =>$student_nrc,
-            "father_name"   =>$father_name,
-            "father_nrc"    =>$father_nrc,
-            "profile"       =>$profile,
-            "dob"           =>$dob,
-            "phone"         =>$phone,
-            "student_email" =>$student_email,
-            "address"       =>$address,
-            "register_fee"  =>$register_fee,
-            "year_id"       =>$year_id,          
-            "major_id"      =>$major_id,
-            "user_id"       =>$user_id
-        ]);
+        $registerations = Registeration::where('user_id', $user_id)->get();
 
-        foreach($book_id as $bid) {
-            SelectedBook::create([
-                "registeration_id" => $register->id,
-                "book_id"      => $bid,
-    
-            ]);
+        // return $registeration;
+
+        $year_array = array();
+
+        foreach($registerations as $registeration)
+        {
+            $rid =$registeration->year_id;
+            array_push($year_array,$rid);
         }
 
+        if(in_array($year_id,$year_array)) {
 
-        foreach($activity_id as $aid) {
-            SelectedActivity::create([
-                "registeration_id" => $register->id,
-                "activity_id"      => $aid,
-    
+            return response()->json('null');
+        }
+       
+        else{
+
+            $register = Registeration::create([
+                "rollno"        =>$rollno,
+                "name"          =>$name,
+                "student_nrc"   =>$student_nrc,
+                "father_name"   =>$father_name,
+                "father_nrc"    =>$father_nrc,
+                "profile"       =>$profile,
+                "dob"           =>$dob,
+                "phone"         =>$phone,
+                "student_email" =>$student_email,
+                "address"       =>$address,
+                "register_fee"  =>$register_fee,
+                "year_id"       =>$year_id,          
+                "major_id"      =>$major_id,
+                "user_id"       =>$user_id
             ]);
+        
+
+            foreach($book_id as $bid) {
+                SelectedBook::create([
+                    "registeration_id" => $register->id,
+                    "book_id"      => $bid,
+        
+                ]);
+            }
+
+
+            foreach($activity_id as $aid) {
+                SelectedActivity::create([
+                    "registeration_id" => $register->id,
+                    "activity_id"      => $aid,
+        
+                ]);
+            }
+
+            return response()->json('success');
+
         }
 
-        return response()->json('success');
+       
 
     }
 
